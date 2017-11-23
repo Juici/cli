@@ -1,0 +1,21 @@
+# auto detect text files and normalise LF
+* text=auto
+
+*.bat   eol=crlf
+*.sh    eol=lf
+
+# diff
+*.html  diff=html
+*.css   diff=css
+*.php   diff=php
+
+*.c     diff=cpp
+*.cpp   diff=cpp
+*.cc    diff=cpp
+
+*.cs    diff=csharp
+
+*.java  diff=java
+
+*.py    diff=python
+*.rb    diff=ruby
