@@ -105,7 +105,6 @@ func (f *FlagSet) AddNewRequiredFlag(short rune, long string, desc string, hasAr
 }
 
 // Flags returns a slice with all the Flags in this FlagSet.
-// Slice is sorted by FlagSlice.Sort()
 func (f *FlagSet) Flags() []*Flag {
 	minCap := len(f.shorts)
 	if l := len(f.longs); l > minCap {
@@ -127,7 +126,7 @@ func (f *FlagSet) Flags() []*Flag {
 	return flags
 }
 
-// ShortFlags returns a slice with all the short Flags in this FlagSet, sorted by FlagSlice.Sort().
+// ShortFlags returns a slice with all the short Flags in this FlagSet.
 func (f *FlagSet) ShortFlags() []*Flag {
 	flags := make([]*Flag, 0, len(f.shorts))
 	for _, flag := range f.shorts {
@@ -137,7 +136,7 @@ func (f *FlagSet) ShortFlags() []*Flag {
 	return flags
 }
 
-// ShortFlags returns a slice with all the long Flags in this FlagSet, sorted by FlagSlice.Sort().
+// ShortFlags returns a slice with all the long Flags in this FlagSet.
 func (f *FlagSet) LongFlags() []*Flag {
 	flags := make([]*Flag, 0, len(f.longs))
 	for _, flag := range f.longs {
@@ -147,7 +146,7 @@ func (f *FlagSet) LongFlags() []*Flag {
 	return flags
 }
 
-// ShortFlags returns a slice with all the required Flags in this FlagSet, sorted by FlagSlice.Sort().
+// ShortFlags returns a slice with all the required Flags in this FlagSet.
 func (f *FlagSet) RequiredFlags() []*Flag {
 	flags := make([]*Flag, len(f.required))
 	copy(flags, f.required)
