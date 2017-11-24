@@ -6,14 +6,14 @@ import (
 )
 
 func TestNewFlag(t *testing.T) {
-	want := &Flag{'a', "", "", "", false, false, defaultArgName}
+	want := &Flag{'a', "", "", false, false, defaultArgName}
 	if got := NewFlag('a', "", "", false); !reflect.DeepEqual(got, want) {
 		t.Errorf("NewFlag() = %v, want %v", got, want)
 	}
 }
 
 func TestNewRequiredFlag(t *testing.T) {
-	want := &Flag{'a', "", "", "", true, false, defaultArgName}
+	want := &Flag{'a', "", "", true, false, defaultArgName}
 	if got := NewRequiredFlag('a', "", "", false); !reflect.DeepEqual(got, want) {
 		t.Errorf("NewFlag() = %v, want %v", got, want)
 	}
@@ -36,12 +36,12 @@ func TestFlag_String(t *testing.T) {
 		{
 			"short, req=false, no arg",
 			fields{'a', "", "desc", false, false, defaultArgName},
-			`cli.Flag{Short='a', Description="desc", DefValue="aaa", Required=false, HasArg=false}`,
+			`cli.Flag{Short='a', Description="desc", Required=false, HasArg=false}`,
 		},
 		{
 			"long, req=true, arg=BBB",
 			fields{0, "bbb", "desc2", true, true, "BBB"},
-			`cli.Flag{Long="bbb", Description="desc2", DefValue="b", Required=true, HasArg=true, ArgName="BBB"}`,
+			`cli.Flag{Long="bbb", Description="desc2", Required=true, HasArg=true, ArgName="BBB"}`,
 		},
 	}
 	for _, tt := range tests {

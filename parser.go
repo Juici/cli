@@ -39,11 +39,7 @@ func NewParser() *Parser {
 
 // Parse parses the command-line arguments passed when executing the program.
 func (p *Parser) Parse(flags *FlagSet) (CommandLine, error) {
-	cmd, err := p.ParseArgs(flags, os.Args[1:])
-	if err != nil {
-		return nil, err
-	}
-	return cmd, nil
+	return p.ParseArgs(flags, os.Args[1:])
 }
 
 // ParseArgs parses the specified slice of string arguments.
@@ -183,7 +179,43 @@ func (p *Parser) handleShort(token string) error {
 }
 
 func (p *Parser) handleFlag(flag *Flag) error {
+	if p.curFlag != nil && p.curFlag.HasArg {
+		return fmt.Errorf("missing argument for %v", p.curFlag)
+	}
 
+	// Remove required flag from expected.
+	if flag.Required {
+		i := -1
+		for j, f := range p.expected {
+			if flag == f {
+				i = j
+				break
+			}
+		}
+
+		if i > -1 {
+			// Remove flag from expected and clear the pointer to prevent memory leaks.
+			// This removal does not preserve order.
+			p.expected[i] = p.expected[len(p.expected)-1]
+			p.expected[len(p.expected)-1] = nil
+			p.expected = p.expected[:len(p.expected)-1]
+		}
+	}
+
+	for _, f := range p.cmd.flags {
+		if flag == f {
+			return fmt.Errorf("CommandLine already contains %v", flag)
+		}
+	}
+	p.cmd.flags = append(p.cmd.flags, flag)
+
+	if flag.HasArg {
+		p.curFlag = flag
+	} else {
+		p.curFlag = nil
+	}
+
+	return nil
 }
 
 func (p *Parser) handleUnknown(token string) error {
