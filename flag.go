@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	defaultArgName = "ARG"
+	defaultArgName        = "ARG"
+	MinimumLongFlagLength = 2
 )
 
 // Flag represents a command line flag, with a short and/or long variation.
@@ -16,9 +17,8 @@ type Flag struct {
 	Long        string // the long flag (empty string for no long flag)
 	Description string // the flag description
 
-	DefValue string // the default value
-	Required bool   // true if flag is required
-	HasArg   bool   // true if the flag has an argument
+	Required bool // true if flag is required
+	HasArg   bool // true if the flag has an argument
 
 	ArgName string // the argument name for the help formatter
 }
@@ -28,7 +28,6 @@ func NewFlag(short rune, long string, desc string, hasArg bool) *Flag {
 		Short:       short,
 		Long:        long,
 		Description: desc,
-		DefValue:    "",
 		Required:    false,
 		HasArg:      hasArg,
 		ArgName:     defaultArgName,
@@ -40,7 +39,6 @@ func NewRequiredFlag(short rune, long string, desc string, hasArg bool) *Flag {
 		Short:       short,
 		Long:        long,
 		Description: desc,
-		DefValue:    "",
 		Required:    true,
 		HasArg:      hasArg,
 		ArgName:     defaultArgName,
@@ -63,9 +61,6 @@ func (f Flag) String() string {
 	}
 	buf.WriteString("Description=\"")
 	buf.WriteString(f.Description)
-	buf.WriteString("\", ")
-	buf.WriteString("DefValue=\"")
-	buf.WriteString(f.DefValue)
 	buf.WriteString("\", ")
 	buf.WriteString("Required=")
 	buf.WriteString(strconv.FormatBool(f.Required))

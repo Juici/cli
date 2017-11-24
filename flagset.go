@@ -46,11 +46,14 @@ func (f *FlagSet) AddFlag(flag *Flag) error {
 		if i := strings.IndexFunc(flag.Long, func(r rune) bool {
 			return !unicode.IsLetter(r)
 		}); i > -1 {
-			return fmt.Errorf("cli.FlagSet: long flag '%v' contains a non letter '%v'",
+			return fmt.Errorf(`cli.FlagSet: long flag "%v" contains a non letter '%v'`,
 				flag.Long, []rune(flag.Long)[i])
 		}
 		if _, ok := f.longs[flag.Long]; ok {
-			return fmt.Errorf("cli.FlagSet: long flag '%v' already exists", flag.Long)
+			return fmt.Errorf(`cli.FlagSet: long flag "%v" already exists`, flag.Long)
+		}
+		if len([]rune(flag.Long)) < MinimumLongFlagLength {
+			return fmt.Errorf(`cli.FlagSet: long flag "%v" must be %d or more letters`, flag.Long, MinimumLongFlagLength)
 		}
 
 		l = true
@@ -76,15 +79,7 @@ func (f *FlagSet) AddFlag(flag *Flag) error {
 // AddNewFlag creates a new Flag and adds it to the FlagSet.
 // Returns the created Flag, or an error if the short/long flag is invalid or already exists.
 func (f *FlagSet) AddNewFlag(short rune, long string, desc string, hasArg bool) (*Flag, error) {
-	flag := &Flag{
-		Short:       short,
-		Long:        long,
-		Description: desc,
-		HasArg:      hasArg,
-		DefValue:    "",
-		Required:    false,
-		ArgName:     defaultArgName,
-	}
+	flag := NewFlag(short, long, desc, hasArg)
 
 	err := f.AddFlag(flag)
 	if err != nil {
@@ -97,15 +92,7 @@ func (f *FlagSet) AddNewFlag(short rune, long string, desc string, hasArg bool) 
 // AddNewFlag creates a new required Flag and adds it to the FlagSet.
 // Returns the created Flag, or an error if the short/long flag is invalid or already exists.
 func (f *FlagSet) AddNewRequiredFlag(short rune, long string, desc string, hasArg bool) (*Flag, error) {
-	flag := &Flag{
-		Short:       short,
-		Long:        long,
-		Description: desc,
-		HasArg:      hasArg,
-		DefValue:    "",
-		Required:    true,
-		ArgName:     defaultArgName,
-	}
+	flag := NewRequiredFlag(short, long, desc, hasArg)
 
 	err := f.AddFlag(flag)
 	if err != nil {
@@ -170,17 +157,19 @@ func (f *FlagSet) RequiredFlags() []*Flag {
 // Returns (Flag, true) if a matching Flag was found.
 // Or (nil, false) if no matching Flag was found.
 func (f *FlagSet) Lookup(name string) (*Flag, bool) {
-	if len(name) == 1 {
-		s := []rune(name)[0]
+	if runes := []rune(name); len(runes) == 1 {
+		s := runes[0]
 		if flag, ok := f.shorts[s]; ok {
 			return flag, ok
 		}
 		return nil, false
 	}
 
+	name = strings.ToLower(name)
 	if flag, ok := f.longs[name]; ok {
 		return flag, ok
 	}
+
 	return nil, false
 }
 
@@ -190,24 +179,17 @@ func (f *FlagSet) Lookup(name string) (*Flag, bool) {
 func (f *FlagSet) Matches(name string) []string {
 	var ret []string
 
-	// Check for perfect short match.
-	if len(name) == 1 {
-		s := []rune(name)[0]
-		if _, ok := f.shorts[s]; ok {
-			ret = append(ret, name)
-			return ret
+	if _, ok := f.Lookup(name); ok {
+		if len([]rune(name)) > 1 {
+			// Lowercase if long flag.
+			name = strings.ToLower(name)
 		}
-	}
 
-	// Casing doesn't matter for long flags.
-	name = strings.ToLower(name)
-
-	// Check for perfect long match.
-	if _, ok := f.longs[name]; ok {
 		ret = append(ret, name)
 		return ret
 	}
 
+	name = strings.ToLower(name)
 	for _, flag := range f.longs {
 		if strings.HasPrefix(flag.Long, name) {
 			ret = append(ret, flag.Long)

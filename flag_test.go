@@ -24,7 +24,6 @@ func TestFlag_String(t *testing.T) {
 		Short       rune
 		Long        string
 		Description string
-		DefValue    string
 		Required    bool
 		HasArg      bool
 		ArgName     string
@@ -35,13 +34,13 @@ func TestFlag_String(t *testing.T) {
 		want   string
 	}{
 		{
-			"short, def=aaa, req=false, no arg",
-			fields{'a', "", "desc", "aaa", false, false, defaultArgName},
+			"short, req=false, no arg",
+			fields{'a', "", "desc", false, false, defaultArgName},
 			`cli.Flag{Short='a', Description="desc", DefValue="aaa", Required=false, HasArg=false}`,
 		},
 		{
-			"long, def=b, req=true, arg=BBB",
-			fields{0, "bbb", "desc2", "b", true, true, "BBB"},
+			"long, req=true, arg=BBB",
+			fields{0, "bbb", "desc2", true, true, "BBB"},
 			`cli.Flag{Long="bbb", Description="desc2", DefValue="b", Required=true, HasArg=true, ArgName="BBB"}`,
 		},
 	}
@@ -51,7 +50,6 @@ func TestFlag_String(t *testing.T) {
 				Short:       tt.fields.Short,
 				Long:        tt.fields.Long,
 				Description: tt.fields.Description,
-				DefValue:    tt.fields.DefValue,
 				Required:    tt.fields.Required,
 				HasArg:      tt.fields.HasArg,
 				ArgName:     tt.fields.ArgName,
