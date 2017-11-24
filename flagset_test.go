@@ -321,8 +321,7 @@ func TestFlagSet_RequiredFlags(t *testing.T) {
 }
 
 func TestFlagSet_Lookup(t *testing.T) {
-	f := NewFlagSet()
-	fa, _ := f.AddNewFlag('a', "aaa", "", false)
+	fa := NewFlag('a', "aaa", "", false)
 
 	type args struct {
 		name string
@@ -339,6 +338,9 @@ func TestFlagSet_Lookup(t *testing.T) {
 		{"no long", args{"bbb"}, nil, false},
 	}
 	for _, tt := range tests {
+		f := NewFlagSet()
+		f.AddFlag(fa)
+
 		t.Run(tt.name, func(t *testing.T) {
 			got, got1 := f.Lookup(tt.args.name)
 			if !reflect.DeepEqual(got, tt.want) {
@@ -352,9 +354,9 @@ func TestFlagSet_Lookup(t *testing.T) {
 }
 
 func TestFlagSet_Matches(t *testing.T) {
-	f := NewFlagSet()
-	f.AddNewFlag('a', "aaa", "", false)
-	f.AddNewFlag(0, "aab", "", false)
+	f1 := NewFlag('a', "aaa", "", false)
+	f2 := NewFlag(0, "bbb", "", false)
+	f3 := NewFlag(0, "aab", "", false)
 
 	type args struct {
 		name string
@@ -370,6 +372,11 @@ func TestFlagSet_Matches(t *testing.T) {
 		{"no matches", args{"ccc"}, []string(nil)},
 	}
 	for _, tt := range tests {
+		f := NewFlagSet()
+		f.AddFlag(f1)
+		f.AddFlag(f2)
+		f.AddFlag(f3)
+
 		t.Run(tt.name, func(t *testing.T) {
 			if got := f.Matches(tt.args.name); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("FlagSet.Matches() = %v, want %v", got, tt.want)

@@ -179,23 +179,26 @@ func (f *FlagSet) Lookup(name string) (*Flag, bool) {
 // Casing is ignored for long flags and the slice will be sorted lexicographically.
 // If a perfect match is found only that match will be returned.
 func (f *FlagSet) Matches(name string) []string {
-	var ret []string
-
 	if _, ok := f.Lookup(name); ok {
 		if len([]rune(name)) > 1 {
 			// Lowercase if long flag.
 			name = strings.ToLower(name)
 		}
-
-		ret = append(ret, name)
-		return ret
+		return []string{name}
 	}
 
+	var ret []string
+
 	name = strings.ToLower(name)
+	fmt.Println()
 	for _, flag := range f.longs {
+		fmt.Println("check: ", flag)
+		fmt.Printf("hasPrefix(%v, %v)=%v\n", flag.Long, name, strings.HasPrefix(flag.Long, name))
 		if strings.HasPrefix(flag.Long, name) {
 			ret = append(ret, flag.Long)
 		}
 	}
+
+	sort.StringSlice(ret).Sort()
 	return ret
 }
