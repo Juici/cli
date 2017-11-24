@@ -4,6 +4,8 @@
 *.bat   eol=crlf
 *.sh    eol=lf
 
+*.go    eol=lf
+
 # diff
 *.html  diff=html
 *.css   diff=css
