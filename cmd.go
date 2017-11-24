@@ -38,10 +38,10 @@ func (c *commandLine) Value(flag *Flag) (string, bool) {
 	}
 	for _, f := range c.flags {
 		if flag == f {
-			return string(nil), true
+			return "", true
 		}
 	}
-	return string(nil), false
+	return "", false
 }
 
 func (c *commandLine) Args() []string {
