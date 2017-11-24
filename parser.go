@@ -32,7 +32,7 @@ func NewParser() *Parser {
 		expected:    nil,
 		skipParsing: false,
 		curFlag:     nil,
-		curToken:    nil,
+		curToken:    "",
 	}
 	return p
 }
