@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -287,6 +288,6 @@ func (p *Parser) isLong(token string) bool {
 }
 
 func (p *Parser) isNegativeNumber(token string) bool {
-	_, err := strconv.ParseFloat(token, 64)
-	return err == nil
+	n, err := strconv.ParseFloat(token, 64)
+	return err == nil && math.Signbit(n)
 }

@@ -83,6 +83,7 @@ func (f *FlagSet) AddNewFlag(short rune, long string, desc string, hasArg bool) 
 
 	err := f.AddFlag(flag)
 	if err != nil {
+		flag = nil
 		return nil, err
 	}
 
@@ -96,6 +97,7 @@ func (f *FlagSet) AddNewRequiredFlag(short rune, long string, desc string, hasAr
 
 	err := f.AddFlag(flag)
 	if err != nil {
+		flag = nil
 		return nil, err
 	}
 
