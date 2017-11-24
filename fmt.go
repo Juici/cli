@@ -10,9 +10,30 @@ const (
 	// Default padding before flag description.
 	defaultDescPad = 2
 
-	// Usage statement prefix.
-	usagePrefix = "Usage: "
+	// Default usage statement prefix.
+	defaultUsagePrefix = "Usage: "
 
-	// Prefix to the flags block.
+	// Default prefix to the flags block.
 	defaultFlagsPrefix = "Flags:"
 )
+
+// Formatter is a utility for formatting a help string for a FlagSet.
+type Formatter struct {
+	Width       int
+	FlagPad     int
+	DescPad     int
+	UsagePrefix string
+	FlagsPrefix string
+}
+
+// NewFormatter constructs a new Formatter with the default values.
+func NewFormatter() *Formatter {
+	f := &Formatter{
+		Width:       defaultWidth,
+		FlagPad:     defaultFlagPad,
+		DescPad:     defaultDescPad,
+		UsagePrefix: defaultUsagePrefix,
+		FlagsPrefix: defaultFlagsPrefix,
+	}
+	return f
+}

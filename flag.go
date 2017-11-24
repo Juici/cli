@@ -23,6 +23,7 @@ type Flag struct {
 	ArgName string // the argument name for the help formatter
 }
 
+// NewFlag constructs a new flag.
 func NewFlag(short rune, long string, desc string, hasArg bool) *Flag {
 	return &Flag{
 		Short:       short,
@@ -34,6 +35,7 @@ func NewFlag(short rune, long string, desc string, hasArg bool) *Flag {
 	}
 }
 
+// NewRequiredFlag constructs a new required flag.
 func NewRequiredFlag(short rune, long string, desc string, hasArg bool) *Flag {
 	return &Flag{
 		Short:       short,
@@ -45,6 +47,7 @@ func NewRequiredFlag(short rune, long string, desc string, hasArg bool) *Flag {
 	}
 }
 
+// String returns a string representation of this flag.
 func (f Flag) String() string {
 	buf := new(bytes.Buffer)
 
