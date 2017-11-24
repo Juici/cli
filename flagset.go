@@ -52,8 +52,8 @@ func (f *FlagSet) AddFlag(flag *Flag) error {
 		if _, ok := f.longs[flag.Long]; ok {
 			return fmt.Errorf(`cli.FlagSet: long flag "%v" already exists`, flag.Long)
 		}
-		if len([]rune(flag.Long)) < MinimumLongFlagLength {
-			return fmt.Errorf(`cli.FlagSet: long flag "%v" must be %d or more letters`, flag.Long, MinimumLongFlagLength)
+		if len([]rune(flag.Long)) < minLongFlagLength {
+			return fmt.Errorf(`cli.FlagSet: long flag "%v" must be %d or more letters`, flag.Long, minLongFlagLength)
 		}
 
 		l = true

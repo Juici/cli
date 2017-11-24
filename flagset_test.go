@@ -73,7 +73,7 @@ func TestFlagSet_AddFlag(t *testing.T) {
 		{
 			"long too short",
 			NewFlagSet(),
-			args{NewFlag(0, "long"[:MinimumLongFlagLength-1], "", false)},
+			args{NewFlag(0, "long"[:minLongFlagLength-1], "", false)},
 			true,
 		},
 		{
@@ -154,7 +154,7 @@ func TestFlagSet_AddNewFlag(t *testing.T) {
 		{
 			"long too short",
 			NewFlagSet(),
-			args{0, "long"[:MinimumLongFlagLength-1], "", false},
+			args{0, "long"[:minLongFlagLength-1], "", false},
 			nil,
 			true,
 		},
@@ -242,7 +242,7 @@ func TestFlagSet_AddNewRequiredFlag(t *testing.T) {
 		{
 			"long too short",
 			NewFlagSet(),
-			args{0, "long"[:MinimumLongFlagLength-1], "", false},
+			args{0, "long"[:minLongFlagLength-1], "", false},
 			nil,
 			true,
 		},

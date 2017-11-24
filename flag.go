@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	defaultArgName        = "ARG"
-	MinimumLongFlagLength = 2
+	defaultArgName    = "ARG"
+	minLongFlagLength = 2
 )
 
 // Flag represents a command line flag, with a short and/or long variation.
