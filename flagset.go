@@ -190,10 +190,7 @@ func (f *FlagSet) Matches(name string) []string {
 	var ret []string
 
 	name = strings.ToLower(name)
-	fmt.Println()
 	for _, flag := range f.longs {
-		fmt.Println("check: ", flag)
-		fmt.Printf("hasPrefix(%v, %v)=%v\n", flag.Long, name, strings.HasPrefix(flag.Long, name))
 		if strings.HasPrefix(flag.Long, name) {
 			ret = append(ret, flag.Long)
 		}
