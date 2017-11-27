@@ -228,7 +228,7 @@ func (p *Parser) handleUnknown(token string) error {
 	}
 
 	p.cmd.addArg(token)
-	p.skipParsing = true
+	//p.skipParsing = true
 
 	return nil
 }

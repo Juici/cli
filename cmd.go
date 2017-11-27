@@ -32,6 +32,7 @@ func (c *commandLine) needsValue(flag *Flag) bool {
 	return !ok
 }
 
+// Value returns the argument parsed for the specified Flag.
 func (c *commandLine) Value(flag *Flag) (string, bool) {
 	if val, ok := c.values[flag]; ok {
 		return val, ok
@@ -44,10 +45,12 @@ func (c *commandLine) Value(flag *Flag) (string, bool) {
 	return "", false
 }
 
+// Args returns the arguments parsed.
 func (c *commandLine) Args() []string {
 	return c.args
 }
 
+// CommandLine represents the parsed results of a Parser.
 type CommandLine interface {
 	// Value returns the value parsed for the specified flag.
 	// If the flag was not parsed
