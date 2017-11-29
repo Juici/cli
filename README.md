@@ -1,6 +1,6 @@
 ## cli [![Build][build]][travis] [![Coverage Status][coverage]][coveralls]
 
-Go command-line flag parsing library.
+GoLang command-line flag parsing library.
 
 [build]: https://travis-ci.org/Juici/cli.svg?branch=master
 [travis]: https://travis-ci.org/Juici/cli
